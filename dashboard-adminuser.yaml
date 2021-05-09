@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kubernetes-dashboard
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kubernetes-dashboard
+
+# start up the dashboard
+#kubectl apply -f kubernetes-dashboard.yaml
+#kubectl proxy
+
+# create a token
+#kubectl -n kubernetes-dashboard get secret $(kubectl -n kubernetes-dashboard get sa/admin-user -o jsonpath="{.secrets[0].name}") -o go-template="{{.data.token | base64decode}}"
+#eyJhbGciOiJSUzI1NiIsImtpZCI6IkFRTEhrb3NXR0JjR3ZHQkExTDNJSlRCd3M1MU4zVUV5cVBxR3AtcHg0eUEifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLTl0ZnI4Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiJhZDQ4NjAwNy1kZjU2LTRmNjItYWNiOC1kMDE3NzgyYzZhZjEiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZXJuZXRlcy1kYXNoYm9hcmQ6YWRtaW4tdXNlciJ9.OAR5G0JIvuElRKyuaCPcDvAnodeYiEw7IKsuEp50LlNNxYyQSGwpismuxzoOwED8gFU66C4rc9EbkMrsMTnK7690hL0657VZjgJ1Pw_QrFqw1ExZ8jtJlrFFlObBBtnv9TQ2EM3mWiHGC-UCj8SuJSQzFM2ARDisS82VNpP-EA6z6ETi0oNYhKmFvOZyD_A7fkjU5O65sqDb_r1JNHQMej8O-C3MTdhu6oKYbmuH3_v42k3WylHBdnP7vzK9TcPu1Yi2x2TupHZx8hnr70dv5A6leMIn2eIKLZQH__voPOu_VfgZU4Ouj6TU8ROnNh_QHN_OqVTzigGt3L9WCPCCmA%
